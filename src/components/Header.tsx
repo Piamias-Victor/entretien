@@ -6,11 +6,8 @@ import { NotificationButton } from './atoms/NotificationButton';
 import { UserMenu } from './atoms/UserMenu';
 import { cn } from '@/lib/utils';
 
-interface HeaderProps {
-  currentPage?: string;
-}
 
-export function Header({ currentPage = 'Dashboard' }: HeaderProps) {
+export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -35,13 +32,6 @@ export function Header({ currentPage = 'Dashboard' }: HeaderProps) {
         <div className="flex items-center gap-6 min-w-0 flex-1">
           {/* Sidebar space */}
           <div className="w-20 shrink-0"></div>
-          
-          {/* Page info */}
-          <div className="min-w-0">
-            <h1 className="text-xl font-bold text-gray-900 truncate">
-              {currentPage}
-            </h1>
-          </div>
         </div>
 
         {/* Right side - Actions avec boutons plus visibles */}

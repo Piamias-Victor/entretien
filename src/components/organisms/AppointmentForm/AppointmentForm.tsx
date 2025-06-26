@@ -1,10 +1,10 @@
-// src/components/organisms/AppointmentForm/AppointmentForm.tsx - Debug et corrections
+// src/components/organisms/AppointmentForm/AppointmentForm.tsx - Correction ligne 17
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
 import { Button } from '@/components/atoms/Button';
 import { Input } from '@/components/atoms/Input';
-import { AppointmentFormData } from '@/types/appointment';
+import { AppointmentFormData, Appointment } from '@/types/appointment'; // AJOUT import Appointment
 import { InterviewTypeCode } from '@/types';
 import { usePatients } from '@/hooks/patients/usePatients';
 import { cn } from '@/lib/utils';
@@ -14,7 +14,7 @@ interface AppointmentFormProps {
   onCancel: () => void;
   initialDate?: Date | undefined;
   initialTime?: string | undefined;
-  editData?: any; // Simplifié pour debug
+  editData?: Appointment | undefined; // CORRECTION : Type spécifique au lieu de any
 }
 
 const interviewTypes: { code: InterviewTypeCode; name: string; color: string }[] = [
@@ -26,7 +26,6 @@ const interviewTypes: { code: InterviewTypeCode; name: string; color: string }[]
   { code: 'Antalgique', name: 'Antalgique', color: 'bg-purple-100 text-purple-700' }
 ];
 
-// Créneaux simplifiés pour le form
 const timeSlots = [
   '09:00', '09:30', '10:00', '10:30', '11:00', '11:30',
   '12:00', '12:30', '13:00', '13:30', '14:00', '14:30',
@@ -50,7 +49,6 @@ export function AppointmentForm({ onSubmit, onCancel, initialDate, initialTime, 
   const [showPatientDropdown, setShowPatientDropdown] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  // Patients éligibles avec recherche
   const filteredPatients = useMemo(() => {
     let eligible = patients.filter(patient => 
       patient.eligibleTypes.includes(formData.interviewType)
@@ -76,8 +74,6 @@ export function AppointmentForm({ onSubmit, onCancel, initialDate, initialTime, 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    console.log('Form submitted with data:', formData); // DEBUG
-
     const newErrors: Record<string, string> = {};
     if (!formData.patientId) newErrors.patientId = 'Patient requis';
     if (!formData.startTime) newErrors.startTime = 'Heure requise';
@@ -89,14 +85,10 @@ export function AppointmentForm({ onSubmit, onCancel, initialDate, initialTime, 
       const selectedPatient = patients.find(p => p.id === formData.patientId);
       const patientName = selectedPatient ? `${selectedPatient.firstName} ${selectedPatient.lastName}` : '';
       
-      console.log('Calling onSubmit with:', { ...formData, patientName }); // DEBUG
-      
       onSubmit({
         ...formData,
         patientName
       });
-    } else {
-      console.log('Form has errors:', newErrors); // DEBUG
     }
   };
 

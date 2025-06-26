@@ -6,7 +6,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-gray-100">
       <Sidebar />
-      <Header currentPage="Dashboard" />
+      <Header />
       
       <div className="pl-20 pt-18">
         <div className="p-6">

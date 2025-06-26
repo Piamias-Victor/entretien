@@ -1,0 +1,32 @@
+// src/app/interviews/[id]/page.tsx
+import { Sidebar } from '@/components/Sidebar';
+import { Header } from '@/components/Header';
+import { InterviewSession } from '@/components/organisms/InterviewSession/InterviewSession';
+
+interface InterviewPageProps {
+  params: { id: string };
+}
+
+export default function InterviewPage({ params }: InterviewPageProps) {
+  // Pour le moment, on simule l'extraction du patientId depuis l'ID d'entretien
+  // Dans une vraie app, on ferait un appel API pour récupérer l'entretien complet
+  const mockPatientId = 'patient-1'; // TODO: Extraire depuis l'API
+  
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-gray-100">
+      <Sidebar />
+      <Header />
+      
+      <div className="pl-20 pt-18">
+        <div className="p-6">
+          <div className="max-w-7xl mx-auto">
+            <InterviewSession 
+              interviewId={params.id} 
+              patientId={mockPatientId}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

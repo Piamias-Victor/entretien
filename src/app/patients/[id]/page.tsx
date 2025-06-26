@@ -1,9 +1,13 @@
-// src/app/planning/page.tsx
+// src/app/patients/[id]/page.tsx
 import { Sidebar } from '@/components/Sidebar';
 import { Header } from '@/components/Header';
-import { WeeklyPlanning } from '@/components/organisms/WeeklyPlanning/WeeklyPlanning';
+import { PatientDetail } from '@/components/organisms/PatientDetail/PatientDetail';
 
-export default function PlanningPage() {
+interface PatientDetailPageProps {
+  params: { id: string };
+}
+
+export default function PatientDetailPage({ params }: PatientDetailPageProps) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-gray-100">
       <Sidebar />
@@ -12,7 +16,7 @@ export default function PlanningPage() {
       <div className="pl-20 pt-18">
         <div className="p-6">
           <div className="max-w-7xl mx-auto">
-            <WeeklyPlanning />
+            <PatientDetail patientId={params.id} />
           </div>
         </div>
       </div>

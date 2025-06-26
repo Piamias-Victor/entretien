@@ -1,7 +1,7 @@
-// src/components/organisms/PatientForm/PatientForm.tsx - Correction error props
+// src/components/organisms/PatientForm/PatientForm.tsx - Version mise à jour avec préremplissage
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/atoms/Button';
 import { Input } from '@/components/atoms/Input';
 import { PatientFormData } from '@/types/patient';
@@ -11,6 +11,8 @@ import { cn } from '@/lib/utils';
 interface PatientFormProps {
   onSubmit: (data: PatientFormData) => void;
   onCancel: () => void;
+  initialData?: PatientFormData; // AJOUT pour préremplissage
+  isEditing?: boolean; // AJOUT pour différencier création/édition
 }
 
 const interviewTypes: { code: InterviewTypeCode; name: string; color: string }[] = [
@@ -22,7 +24,13 @@ const interviewTypes: { code: InterviewTypeCode; name: string; color: string }[]
   { code: 'Antalgique', name: 'Antalgique', color: 'bg-purple-100 text-purple-700' }
 ];
 
-export function PatientForm({ onSubmit, onCancel }: PatientFormProps) {
+export function PatientForm({ 
+  onSubmit, 
+  onCancel, 
+  initialData, 
+  isEditing = false 
+}: PatientFormProps) {
+  // MODIFICATION : Préremplissage avec initialData
   const [formData, setFormData] = useState<PatientFormData>({
     firstName: '',
     lastName: '',
@@ -33,6 +41,13 @@ export function PatientForm({ onSubmit, onCancel }: PatientFormProps) {
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // AJOUT : Effect pour préremplir les données
+  useEffect(() => {
+    if (initialData) {
+      setFormData(initialData);
+    }
+  }, [initialData]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -132,8 +147,9 @@ export function PatientForm({ onSubmit, onCancel }: PatientFormProps) {
       </div>
 
       <div className="flex gap-3 pt-4">
+        {/* MODIFICATION : Texte du bouton selon le mode */}
         <Button type="submit" variant="primary" className="flex-1">
-          Créer le patient
+          {isEditing ? 'Modifier le patient' : 'Créer le patient'}
         </Button>
         <Button type="button" variant="outline" onClick={onCancel}>
           Annuler
