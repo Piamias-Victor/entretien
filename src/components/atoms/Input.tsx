@@ -1,9 +1,10 @@
+// src/components/atoms/Input.tsx - Mise à jour pour TypeScript strict
 import { InputHTMLAttributes, forwardRef } from 'react';
 import { cn } from '@/lib/utils';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
-  error?: string;
+  error?: string | undefined; // Correction explicite pour exactOptionalPropertyTypes
   isRequired?: boolean;
 }
 

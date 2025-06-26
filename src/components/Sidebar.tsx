@@ -1,6 +1,8 @@
+// src/components/Sidebar.tsx - Modification pour état actif dynamique
 'use client';
 
 import { useState } from 'react';
+import { usePathname } from 'next/navigation'; // AJOUT
 import { LayoutDashboard, Calendar, Users } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -9,17 +11,16 @@ interface NavItem {
   label: string;
   href: string;
   icon: React.ComponentType<{ size?: number; className?: string }>;
-  active?: boolean;
   count?: number;
 }
 
+// SUPPRESSION du "active: true" - sera calculé dynamiquement
 const navItems: NavItem[] = [
   { 
     id: 'dashboard',
     label: 'Dashboard', 
     href: '/', 
     icon: LayoutDashboard, 
-    active: true,
     count: 5
   },
   { 
@@ -40,6 +41,15 @@ const navItems: NavItem[] = [
 
 export function Sidebar() {
   const [isExpanded, setIsExpanded] = useState(false);
+  const pathname = usePathname(); // AJOUT
+
+  // AJOUT: Fonction pour déterminer si un item est actif
+  const isActive = (href: string) => {
+    if (href === '/') {
+      return pathname === '/';
+    }
+    return pathname.startsWith(href);
+  };
 
   return (
     <aside 
@@ -78,16 +88,16 @@ export function Sidebar() {
         <nav className="flex-1 p-4 space-y-2">
           {navItems.map((item) => {
             const IconComponent = item.icon;
+            const active = isActive(item.href); // MODIFICATION: calculé dynamiquement
             
             return (
-              
-            <a key={item.id}
+              <a key={item.id}
                 href={item.href}
                 className={cn(
                   'group relative flex items-center rounded-xl transition-all duration-200',
                   'hover:bg-white/60 hover:shadow-md hover:shadow-black/5',
                   isExpanded ? 'px-4 py-3' : 'px-3 py-3 justify-center',
-                  item.active 
+                  active // MODIFICATION: utilise la variable calculée
                     ? 'bg-blue-50/80 text-blue-700 shadow-sm border border-blue-200/50' 
                     : 'text-gray-600 hover:text-gray-800'
                 )}
@@ -97,7 +107,7 @@ export function Sidebar() {
                   size={20} 
                   className={cn(
                     'transition-colors duration-200 shrink-0',
-                    item.active ? 'text-blue-600' : 'text-gray-500 group-hover:text-gray-700'
+                    active ? 'text-blue-600' : 'text-gray-500 group-hover:text-gray-700' // MODIFICATION
                   )}
                 />
                 
@@ -119,7 +129,7 @@ export function Sidebar() {
                   )}>
                     <span className={cn(
                       'px-2 py-0.5 text-xs font-medium rounded-full',
-                      item.active 
+                      active // MODIFICATION
                         ? 'bg-blue-100 text-blue-700' 
                         : 'bg-gray-100 text-gray-600'
                     )}>
@@ -129,7 +139,7 @@ export function Sidebar() {
                 )}
                 
                 {/* Active Indicator */}
-                {item.active && (
+                {active && ( // MODIFICATION
                   <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-blue-600 rounded-r-full" />
                 )}
               </a>
