@@ -1,15 +1,16 @@
-// src/app/interviews/[id]/page.tsx
+// src/app/interviews/[id]/page.tsx - CORRECTION Next.js 15
 import { Sidebar } from '@/components/Sidebar';
 import { Header } from '@/components/Header';
 import { InterviewSession } from '@/components/organisms/InterviewSession/InterviewSession';
 
 interface InterviewPageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>; // CORRECTION: Promise pour Next.js 15
 }
 
-export default function InterviewPage({ params }: InterviewPageProps) {
+export default async function InterviewPage({ params }: InterviewPageProps) {
+  const { id } = await params; // CORRECTION: await params
+  
   // Pour le moment, on simule l'extraction du patientId depuis l'ID d'entretien
-  // Dans une vraie app, on ferait un appel API pour récupérer l'entretien complet
   const mockPatientId = 'patient-1'; // TODO: Extraire depuis l'API
   
   return (
@@ -21,7 +22,7 @@ export default function InterviewPage({ params }: InterviewPageProps) {
         <div className="p-6">
           <div className="max-w-7xl mx-auto">
             <InterviewSession 
-              interviewId={params.id} 
+              interviewId={id} 
               patientId={mockPatientId}
             />
           </div>

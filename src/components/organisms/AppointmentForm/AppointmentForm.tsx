@@ -1,20 +1,31 @@
-// src/components/organisms/AppointmentForm/AppointmentForm.tsx - Correction ligne 17
+// src/components/organisms/AppointmentForm/AppointmentForm.tsx - CORRECTION editData
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
 import { Button } from '@/components/atoms/Button';
 import { Input } from '@/components/atoms/Input';
-import { AppointmentFormData, Appointment } from '@/types/appointment'; // AJOUT import Appointment
+import { AppointmentFormData } from '@/types/appointment';
 import { InterviewTypeCode } from '@/types';
 import { usePatients } from '@/hooks/patients/usePatients';
 import { cn } from '@/lib/utils';
+
+// CORRECTION: Type plus flexible pour editData
+interface AppointmentEditData {
+  patientId: string;
+  patientName: string;
+  interviewType: InterviewTypeCode;
+  date: Date;
+  startTime: string;
+  duration: number;
+  notes: string;
+}
 
 interface AppointmentFormProps {
   onSubmit: (data: AppointmentFormData & { patientName: string }) => void;
   onCancel: () => void;
   initialDate?: Date | undefined;
   initialTime?: string | undefined;
-  editData?: Appointment | undefined; // CORRECTION : Type spécifique au lieu de any
+  editData?: AppointmentEditData | undefined; // CORRECTION: Type plus flexible
 }
 
 const interviewTypes: { code: InterviewTypeCode; name: string; color: string }[] = [
