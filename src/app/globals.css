@@ -1,26 +1,40 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
+/* Test de fonctionnement Tailwind */
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f8fafc; /* Équivalent à bg-slate-50 */
+}
+
+/* Si ces styles apparaissent, Tailwind ne fonctionne pas */
+.test-tailwind-failure {
+  color: red;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Variables CSS de base */
 :root {
+  --foreground: #000000;
   --background: #ffffff;
-  --foreground: #171717;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Styles de composants pour test */
+@layer components {
+  .btn-test {
+    @apply bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600;
+  }
+  
+  .card-test {
+    @apply bg-white shadow-lg rounded-lg p-6 border;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Styles utilitaires custom */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
 }
